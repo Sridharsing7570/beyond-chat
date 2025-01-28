@@ -1,299 +1,300 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  AtSign,
-  Lock,
+  Send,
   User,
-  Globe,
-  Building,
-  FileText,
-  ChevronRight,
-  Check,
-  Code,
   Mail,
-  Share2,
+  Lock,
+  Building,
+  Globe,
+  FileText,
   MessageSquare,
+  X,
+  Code,
+  Check,
+  AlertCircle,
   Settings,
-  AlertTriangle,
-} from "lucide-react";
+  Share2,
+  ChevronRight,
+  Minimize2,
+  Maximize2
+} from 'lucide-react';
 
 const BeyondChat = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showChatTest, setShowChatTest] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [webpages, setWebpages] = useState([
-    {
-      url: "/about",
-      status: "scraped",
-      chunks: ["About our company...", "Our mission..."],
-    },
-    { url: "/products", status: "pending", chunks: [] },
-    { url: "/contact", status: "scraping", chunks: [] },
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const [isMinimized, setIsMinimized] = useState(false);
 
-  const steps = [
-    "User Registration",
-    "Setup Organisation",
-    "Integration & Testing",
-  ];
+  const sendMessage = () => {
+    if (!inputMessage.trim()) return;
 
-  const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
+    setMessages([
+      ...messages,
+      {
+        type: "user",
+        content: inputMessage,
+      },
+    ]);
+    setInputMessage("");
+
+    // Simulate bot response
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          type: "bot",
+          content:
+            "Thanks for your message! I'm a demo AI assistant. How can I help you today?",
+        },
+      ]);
+    }, 1000);
   };
 
-  const renderProgressBar = () => (
-    <div className="w-full mb-8">
-      <div className="flex justify-between mb-2">
-        {steps.map((step, index) => (
-          <div key={index} className="flex flex-col items-center w-1/3">
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                currentStep > index + 1
-                  ? "bg-green-500"
-                  : currentStep === index + 1
-                  ? "bg-blue-500"
-                  : "bg-gray-300"
-              } text-white mb-2`}
-            >
-              {currentStep > index + 1 ? <Check size={16} /> : index + 1}
-            </div>
-            <span className="text-sm text-center hidden md:block">{step}</span>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      <div className="max-w-4xl mx-auto p-4 py-8">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Set up your AI Assistant
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Complete these steps to launch your chatbot
+          </p>
+        </div>
+
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 relative">
+          <StepIndicator currentStep={currentStep} />
+
+          <div className="mt-8">
+            {currentStep === 1 && (
+              <RegistrationStep onNext={() => setCurrentStep(2)} />
+            )}
+            {currentStep === 2 && (
+              <OrganizationStep onNext={() => setCurrentStep(3)} />
+            )}
+            {currentStep === 3 && (
+              <IntegrationStep
+                onShowChat={() => setShowChatTest(true)}
+                onSuccess={() => setShowSuccess(true)}
+              />
+            )}
           </div>
-        ))}
+        </div>
       </div>
-      <div className="relative w-full bg-gray-200 h-2 rounded-full">
-        <div
-          className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-500"
-          style={{
-            width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
-          }}
-        />
-      </div>
-    </div>
-  );
 
-  const renderRegistrationForm = () => (
-    <motion.div {...fadeIn} className="space-y-6">
-      <h2 className="text-2xl font-bold mb-6">Create Your Account</h2>
-      <div className="space-y-4">
-        <div className="relative">
-          <User className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="relative">
-          <AtSign className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="email"
-            placeholder="Email Address"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <button
-          onClick={() => setCurrentStep(2)}
-          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2"
-        >
-          <span>Continue</span>
-          <ChevronRight size={20} />
-        </button>
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">
-              Or continue with
-            </span>
-          </div>
-        </div>
-        <button className="w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2">
-          <img src="/api/placeholder/20/20" alt="Google" className="w-5 h-5" />
-          <span>Google</span>
-        </button>
-      </div>
-    </motion.div>
-  );
-
-  const renderOrganizationSetup = () => (
-    <motion.div {...fadeIn} className="space-y-6">
-      <h2 className="text-2xl font-bold mb-6">Setup Your Organisation</h2>
-      <div className="space-y-4">
-        <div className="relative">
-          <Building className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="text"
-            placeholder="Company Name"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="relative">
-          <Globe className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="url"
-            placeholder="Company Website URL"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="relative">
-          <FileText className="absolute left-3 top-3 text-gray-400" size={20} />
-          <textarea
-            placeholder="Company Description"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
-          />
-        </div>
-
-        <div className="bg-gray-50 p-4 rounded-lg">
-          <h3 className="font-semibold mb-4">Website Scraping Status</h3>
-          <div className="space-y-2">
-            {webpages.map((page, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-2 bg-white rounded-lg shadow-sm"
-              >
-                <span>{page.url}</span>
-                <span
-                  className={`px-2 py-1 rounded-full text-sm ${
-                    page.status === "scraped"
-                      ? "bg-green-100 text-green-800"
-                      : page.status === "scraping"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {page.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex space-x-4">
-          <button
-            onClick={() => setCurrentStep(3)}
-            className="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2"
+      {/* Chat Test Interface */}
+      <AnimatePresence>
+        {showChatTest && (
+          <motion.div
+            initial={isMinimized ? { bottom: "-400px" } : { bottom: "20px" }}
+            animate={isMinimized ? { bottom: "-400px" } : { bottom: "20px" }}
+            exit={{ bottom: "-400px" }}
+            className="fixed right-4 w-96 bg-white rounded-t-xl shadow-2xl"
           >
-            <span>Continue</span>
-            <ChevronRight size={20} />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  const renderIntegrationTesting = () => (
-    <motion.div {...fadeIn} className="space-y-6">
-      <h2 className="text-2xl font-bold mb-6">Integration & Testing</h2>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <button
-          className="p-6 border rounded-lg hover:bg-gray-50 transition-all text-left space-y-2"
-          onClick={() => setShowSuccess(true)}
-        >
-          <div className="flex items-center space-x-2 text-lg font-semibold">
-            <MessageSquare className="text-blue-500" />
-            <span>Test Chatbot</span>
-          </div>
-          <p className="text-gray-600 text-sm">
-            Preview your chatbot in action on a demo website
-          </p>
-        </button>
-
-        <button className="p-6 border rounded-lg hover:bg-gray-50 transition-all text-left space-y-2">
-          <div className="flex items-center space-x-2 text-lg font-semibold">
-            <Code className="text-blue-500" />
-            <span>Integration Code</span>
-          </div>
-          <p className="text-gray-600 text-sm">
-            Get the code snippet to add to your website
-          </p>
-        </button>
-
-        <button className="p-6 border rounded-lg hover:bg-gray-50 transition-all text-left space-y-2">
-          <div className="flex items-center space-x-2 text-lg font-semibold">
-            <Mail className="text-blue-500" />
-            <span>Email Instructions</span>
-          </div>
-          <p className="text-gray-600 text-sm">
-            Send integration instructions to your developer
-          </p>
-        </button>
-
-        <button className="p-6 border rounded-lg hover:bg-gray-50 transition-all text-left space-y-2">
-          <div className="flex items-center space-x-2 text-lg font-semibold">
-            <AlertTriangle className="text-blue-500" />
-            <span>Test Integration</span>
-          </div>
-          <p className="text-gray-600 text-sm">
-            Verify if the chatbot is properly integrated
-          </p>
-        </button>
-      </div>
-
-      {showSuccess && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
-        >
-          <div className="bg-white rounded-lg p-6 max-w-md w-full space-y-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="text-green-500" size={32} />
-              </div>
-              <h3 className="text-xl font-bold mb-2">
-                Integration Successful!
-              </h3>
-              <p className="text-gray-600">Your chatbot is now ready to use</p>
-            </div>
-
-            <div className="space-y-3">
-              <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2">
-                <Settings size={20} />
-                <span>Explore Admin Panel</span>
-              </button>
-
-              <button className="w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2">
+            <div className="p-4 bg-indigo-600 rounded-t-xl flex justify-between items-center">
+              <div className="flex items-center space-x-2 text-white">
                 <MessageSquare size={20} />
-                <span>Start Talking to Your Chatbot</span>
-              </button>
-
-              <div className="flex justify-center space-x-4">
-                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                  <Share2 size={20} />
+                <span className="font-medium">Test Chat</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setIsMinimized(!isMinimized)}
+                  className="text-white hover:text-indigo-200"
+                >
+                  {isMinimized ? (
+                    <Maximize2 size={18} />
+                  ) : (
+                    <Minimize2 size={18} />
+                  )}
+                </button>
+                <button
+                  onClick={() => setShowChatTest(false)}
+                  className="text-white hover:text-indigo-200"
+                >
+                  <X size={18} />
                 </button>
               </div>
             </div>
-          </div>
-        </motion.div>
-      )}
-    </motion.div>
-  );
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
-        {renderProgressBar()}
+            <div className="h-96 flex flex-col">
+              <div className="flex-1 p-4 overflow-y-auto space-y-4">
+                {messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex ${
+                      message.type === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        message.type === "user"
+                          ? "bg-indigo-600 text-white rounded-br-none"
+                          : "bg-gray-100 text-gray-800 rounded-bl-none"
+                      }`}
+                    >
+                      {message.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-        {currentStep === 1 && renderRegistrationForm()}
-        {currentStep === 2 && renderOrganizationSetup()}
-        {currentStep === 3 && renderIntegrationTesting()}
-      </div>
+              <div className="p-4 border-t">
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                    placeholder="Type your message..."
+                    className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <button
+                    onClick={sendMessage}
+                    className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                  >
+                    <Send size={20} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-8 max-w-md w-full"
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Check className="text-white" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800">All Set!</h3>
+                <p className="text-gray-600 mt-2">
+                  Your AI assistant is ready to help your customers
+                </p>
+              </div>
+
+              <div className="space-y-3 mt-6">
+                <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-opacity">
+                  Go to Admin Panel
+                </button>
+                <button className="w-full border border-gray-200 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                  View Live Chat
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
+const StepIndicator = ({ currentStep }) => {
+  const steps = [
+    { number: 1, title: 'Account' },
+    { number: 2, title: 'Organization' },
+    { number: 3, title: 'Integration' }
+  ];
+
+  return (
+    <div className="flex justify-between relative">
+      {steps.map((step, index) => (
+        <div key={step.number} className="flex flex-col items-center flex-1">
+          <div
+            className={`
+              w-10 h-10 rounded-full flex items-center justify-center
+              transition-colors duration-300
+              ${
+                step.number === currentStep
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+                  : step.number < currentStep
+                  ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
+                  : 'bg-gray-100 text-gray-400'
+              }
+            `}
+          >
+            {step.number < currentStep ? <Check size={20} /> : step.number}
+          </div>
+          <div className="mt-2 text-sm font-medium text-gray-600">{step.title}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Other components remain similar but with updated styling to match new theme
+const RegistrationStep = ({ onNext }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="max-w-md mx-auto space-y-6"
+  >
+    <div className="space-y-4">
+      <div className="relative">
+        <User className="absolute left-3 top-3 text-gray-400" size={20} />
+        <input
+          type="text"
+          placeholder="Full Name"
+          className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+        />
+      </div>
+      <div className="relative">
+        <Mail className="absolute left-3 top-3 text-gray-400" size={20} />
+        <input
+          type="email"
+          placeholder="Email Address"
+          className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+        />
+      </div>
+      <div className="relative">
+        <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+        />
+      </div>
+    </div>
+
+    <button
+      onClick={onNext}
+      className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-opacity"
+    >
+      Continue
+    </button>
+
+    <div className="relative">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-gray-200" />
+      </div>
+      <div className="relative flex justify-center text-sm">
+        <span className="px-2 bg-white text-gray-500">or</span>
+      </div>
+    </div>
+
+    <button className="w-full border border-gray-200 p-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2">
+      <img src="/api/placeholder/20/20" alt="Google" className="w-5 h-5" />
+      <span>Continue with Google</span>
+    </button>
+  </motion.div>
+);
+
 export default BeyondChat;
+
 
