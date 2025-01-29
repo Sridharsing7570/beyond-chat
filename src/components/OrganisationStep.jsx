@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Building, Globe, FileText } from "lucide-react";
+import ScrapingDashboard from "./ScrapingDashboard";
 
 const OrganisationStep = ({ onNext }) => (
     <motion.div
@@ -44,6 +45,10 @@ const OrganisationStep = ({ onNext }) => (
                     <option value="201-500">201-500 employees</option>
                     <option value="501+">501+ employees</option>
                 </select>
+            </div>
+
+            <div>
+                <ScrapingDashboard />
             </div>
         </div>
 
