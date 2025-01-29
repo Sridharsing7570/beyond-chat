@@ -20,6 +20,7 @@ import {
     Maximize2,
 } from "lucide-react";
 import OrganisationStep from "./OrganisationStep";
+import IntegrationStep from "./IntegrationStep";
 
 const BeyondChat = () => {
     const [currentStep, setCurrentStep] = useState(1);
