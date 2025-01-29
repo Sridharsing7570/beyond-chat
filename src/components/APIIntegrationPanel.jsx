@@ -30,8 +30,6 @@ console.log(data.message);`;
         setTimeout(() => setShowCopiedMessage(""), 2000);
     };
 
-    console.log("this is api integration panel");
-
     return (
         <AnimatePresence>
             {isOpen && (

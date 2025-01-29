@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Building, Globe, FileText } from "lucide-react";
 import ScrapingDashboard from "./ScrapingDashboard";
+import MetadataFetcher from "./MetadataFetcher";
 
 const OrganisationStep = ({ onNext }) => (
     <motion.div
@@ -35,16 +36,8 @@ const OrganisationStep = ({ onNext }) => (
                 />
             </div>
 
-            <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Organization Size</label>
-                <select className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none bg-white">
-                    <option value="">Select size</option>
-                    <option value="1-10">1-10 employees</option>
-                    <option value="11-50">11-50 employees</option>
-                    <option value="51-200">51-200 employees</option>
-                    <option value="201-500">201-500 employees</option>
-                    <option value="501+">501+ employees</option>
-                </select>
+            <div>
+                <MetadataFetcher url="https://www.google.com/" />
             </div>
 
             <div>
