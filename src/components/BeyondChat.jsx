@@ -71,7 +71,6 @@ const BeyondChat = () => {
                         {currentStep === 3 && (
                             <IntegrationStep
                                 onShowChat={() => setShowChatTest(true)}
-                                onSuccess={() => setShowSuccess(true)}
                                 onShowApi={() => setShowAPIPanel(true)}
                             />
                         )}
@@ -161,7 +160,7 @@ const BeyondChat = () => {
             </AnimatePresence>
 
             {/* Success Modal */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
                 {showSuccess && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -202,7 +201,7 @@ const BeyondChat = () => {
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence> */}
 
             {/* API Integration Panel */}
             <APIIntegrationPanel isOpen={showAPIPanel} onClose={() => setShowAPIPanel(false)} />
