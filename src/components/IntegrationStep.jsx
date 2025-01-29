@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Code, Settings, Share2, AlertCircle, ChevronRight } from "lucide-react";
 
-const IntegrationStep = ({ onShowChat, onSuccess }) => {
+const IntegrationStep = ({ onShowChat, onSuccess, onShowApi }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -50,7 +50,10 @@ const IntegrationStep = ({ onShowChat, onSuccess }) => {
                     </button>
 
                     {/* API Integration */}
-                    <button className="w-full p-4 border border-gray-200 rounded-lg hover:border-indigo-500 transition-colors group">
+                    <button
+                        className="w-full p-4 border border-gray-200 rounded-lg hover:border-indigo-500 transition-colors group"
+                        onClick={onShowApi}
+                    >
                         <div className="flex justify-between items-center">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-purple-100 rounded-lg text-purple-600">

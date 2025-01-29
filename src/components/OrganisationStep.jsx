@@ -49,7 +49,7 @@ const OrganisationStep = ({ onNext }) => (
 
         <button
             onClick={onNext}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-opacity"
+            className="w-full bg-gradient-to-r from-indigo-600 cursor-pointer to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-opacity"
         >
             Continue
         </button>

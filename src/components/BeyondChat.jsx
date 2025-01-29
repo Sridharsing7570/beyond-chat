@@ -5,22 +5,16 @@ import {
     User,
     Mail,
     Lock,
-    Building,
-    Globe,
-    FileText,
     MessageSquare,
     X,
-    Code,
     Check,
-    AlertCircle,
-    Settings,
-    Share2,
-    ChevronRight,
     Minimize2,
     Maximize2,
 } from "lucide-react";
 import OrganisationStep from "./OrganisationStep";
 import IntegrationStep from "./IntegrationStep";
+import googleLogo from "../assets/icons8-google-logo.svg";
+import APIIntegrationPanel from "./APIIntegrationPanel";
 
 const BeyondChat = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -29,6 +23,7 @@ const BeyondChat = () => {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
     const [isMinimized, setIsMinimized] = useState(false);
+    const [showAPIPanel, setShowAPIPanel] = useState(false);
 
     const sendMessage = () => {
         if (!inputMessage.trim()) return;
@@ -77,6 +72,7 @@ const BeyondChat = () => {
                             <IntegrationStep
                                 onShowChat={() => setShowChatTest(true)}
                                 onSuccess={() => setShowSuccess(true)}
+                                onShowApi={() => setShowAPIPanel(true)}
                             />
                         )}
                     </div>
@@ -110,7 +106,7 @@ const BeyondChat = () => {
                                 </button>
                                 <button
                                     onClick={() => setShowChatTest(false)}
-                                    className="text-white hover:text-indigo-200"
+                                    className="text-white cursor-pointer hover:text-indigo-200"
                                 >
                                     <X size={18} />
                                 </button>
@@ -179,6 +175,12 @@ const BeyondChat = () => {
                             exit={{ scale: 0.9, opacity: 0 }}
                             className="bg-white rounded-xl p-8 max-w-md w-full"
                         >
+                            <button
+                                onClick={() => setShowSuccess(false)}
+                                className="text-black cursor-pointer hover:text-indigo-200"
+                            >
+                                <X size={18} />
+                            </button>
                             <div className="text-center">
                                 <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <Check className="text-white" size={32} />
@@ -201,6 +203,9 @@ const BeyondChat = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* API Integration Panel */}
+            <APIIntegrationPanel isOpen={showAPIPanel} onClose={() => setShowAPIPanel(false)} />
         </div>
     );
 };
@@ -274,7 +279,7 @@ const RegistrationStep = ({ onNext }) => (
 
         <button
             onClick={onNext}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 rounded-lg hover:opacity-90 transition-opacity"
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 cursor-pointer rounded-lg hover:opacity-90 transition-opacity"
         >
             Continue
         </button>
@@ -289,7 +294,7 @@ const RegistrationStep = ({ onNext }) => (
         </div>
 
         <button className="w-full border border-gray-200 p-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center space-x-2">
-            <img src="/api/placeholder/20/20" alt="Google" className="w-5 h-5" />
+            <img src={googleLogo} alt="Google" className="w-5 h-5" />
             <span>Continue with Google</span>
         </button>
     </motion.div>
