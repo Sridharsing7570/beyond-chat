@@ -26,7 +26,6 @@ const OrganisationStep = ({ onNext }) => {
     const updateDebouncedUrl = useCallback(
         debounce((newUrl) => {
             setDebouncedUrl(newUrl);
-            console.log("debounced url", debouncedUrl);
         }, 500),
         []
     );
@@ -36,11 +35,6 @@ const OrganisationStep = ({ onNext }) => {
         updateDebouncedUrl(url);
     }, [url]);
 
-    useEffect(() => {
-        console.log("url...........>", url);
-    }, [url]);
-
-    // console.log("url........>", url);
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
