@@ -134,12 +134,6 @@ const IntegrationStep = ({ onShowChat }) => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-            {/* Top Alert Banner */}
-            <div className="bg-blue-500 text-white py-3 px-4 text-center text-sm">
-                <span>Chatbot not working as intended?</span>
-                <button className="underline ml-1">Share feedback</button>
-            </div>
-
             <div className="max-w-6xl mx-auto p-8">
                 <div className="text-center mb-12">
                     <h1 className="text-3xl font-bold text-slate-900 mb-4">
@@ -309,6 +303,15 @@ const IntegrationStep = ({ onShowChat }) => {
                                     </p>
                                 </div>
                             )}
+
+                            <div className="mt-6 flex justify-end">
+                                <button
+                                    onClick={() => setShowTestModal(false)}
+                                    className="text-slate-600 text-lg hover:text-slate-800 cursor-pointer"
+                                >
+                                    Close
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}

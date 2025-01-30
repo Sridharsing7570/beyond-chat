@@ -87,6 +87,12 @@ const BeyondChat = () => {
                         exit={{ bottom: "-400px" }}
                         className="fixed right-4 w-96 bg-white rounded-t-xl shadow-2xl"
                     >
+                        {/* Top Alert Banner */}
+                        <div className="bg-blue-500 text-white py-3 px-4 text-center text-sm rounded-t-md">
+                            <span>Chatbot not working as intended?</span>
+                            <button className="underline ml-1">Share feedback</button>
+                        </div>
+
                         <div className="p-4 bg-indigo-600 rounded-t-xl flex justify-between items-center">
                             <div className="flex items-center space-x-2 text-white">
                                 <MessageSquare size={20} />
