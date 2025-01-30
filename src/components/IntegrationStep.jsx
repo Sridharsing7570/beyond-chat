@@ -111,11 +111,14 @@ import {
     CheckCircle2,
     ArrowRight,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const IntegrationStep = ({ onShowChat }) => {
     const [showIntegrationModal, setShowIntegrationModal] = useState(false);
     const [showTestModal, setShowTestModal] = useState(false);
     const [integrationDetected, setIntegrationDetected] = useState(false);
+
+    const navigate = useNavigate();
 
     const dummyCode = `<script>
   window.chatbotConfig = {
@@ -159,6 +162,7 @@ const IntegrationStep = ({ onShowChat }) => {
                                 className="w-full bg-blue-500 cursor-pointer hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center justify-center"
                                 onClick={() => {
                                     onShowChat();
+                                    navigate();
                                 }}
                             >
                                 Launch Demo
@@ -173,7 +177,9 @@ const IntegrationStep = ({ onShowChat }) => {
                             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <ExternalLink className="w-6 h-6 text-purple-600" />
                             </div>
-                            <h2 className="text-xl font-semibold mb-4">Add to Website</h2>
+                            <h2 className="text-xl font-semibold mb-4">
+                                Integrate on your website
+                            </h2>
                             <p className="text-slate-600 mb-6">
                                 Get the code to integrate the chatbot with your website
                             </p>
@@ -193,7 +199,7 @@ const IntegrationStep = ({ onShowChat }) => {
                             <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <CheckCircle2 className="w-6 h-6 text-green-600" />
                             </div>
-                            <h2 className="text-xl font-semibold mb-4">Verify Setup</h2>
+                            <h2 className="text-xl font-semibold mb-4">Test integration</h2>
                             <p className="text-slate-600 mb-6">
                                 Confirm your chatbot is properly integrated
                             </p>
